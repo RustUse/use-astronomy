@@ -1,0 +1,105 @@
+[workspace]
+release = false
+release_always = false
+changelog_update = false
+pr_labels = ["release"]
+max_analyze_commits = 2000
+
+[[package]]
+name = "use-celestial-body"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-star"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-planet"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-moon"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-astronomical-orbit"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-orbital-element"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-astronomical-coordinate"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-magnitude"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-epoch"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-constellation"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-astronomical-observation"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-catalog-object"
+release = true
+version_group = "rustuse-astronomy"
+
+[[package]]
+name = "use-astronomy"
+release = true
+version_group = "rustuse-astronomy"
+changelog_update = true
+changelog_path = "./CHANGELOG.md"
+changelog_include = [
+  "use-celestial-body",
+  "use-star",
+  "use-planet",
+  "use-moon",
+  "use-astronomical-orbit",
+  "use-orbital-element",
+  "use-astronomical-coordinate",
+  "use-magnitude",
+  "use-epoch",
+  "use-constellation",
+  "use-astronomical-observation",
+  "use-catalog-object",
+]
+
+[changelog]
+header = """# Changelog
+
+## Unreleased
+"""
+protect_breaking_commits = true
+sort_commits = "oldest"
+commit_parsers = [
+  { message = "^feat(?:\\([^)]+\\))?!?: .+", group = "Added" },
+  { message = "^fix(?:\\([^)]+\\))?!?: .+", group = "Fixed" },
+  { message = "^security(?:\\([^)]+\\))?!?: .+", group = "Security" },
+  { message = "^(?:refactor|perf|change)(?:\\([^)]+\\))?!?: .+", group = "Changed" },
+  { message = "^docs(?:\\([^)]+\\))?!?: .+", group = "Documentation" },
+  { message = "^(?:build|ci|chore|deps|test)(?:\\([^)]+\\))?!?: .+", group = "Tooling" },
+  { footer = "^changelog: ?ignore$", skip = true },
+  { message = "^.*", group = "Changed" },
+]

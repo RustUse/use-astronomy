@@ -1,0 +1,35 @@
+[package]
+name = "use-astronomy"
+description = "Facade crate for primitive RustUse astronomy vocabulary"
+publish = true
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+rust-version.workspace = true
+readme = "README.md"
+documentation = "https://docs.rs/use-astronomy"
+keywords = ["astronomy", "celestial", "orbit", "catalog", "rustuse"]
+categories = ["data-structures", "science"]
+
+[package.metadata.docs.rs]
+all-features = true
+
+[dependencies]
+use-astronomical-coordinate.workspace = true
+use-astronomical-observation.workspace = true
+use-astronomical-orbit.workspace = true
+use-catalog-object.workspace = true
+use-celestial-body.workspace = true
+use-constellation.workspace = true
+use-epoch.workspace = true
+use-magnitude.workspace = true
+use-moon.workspace = true
+use-orbital-element.workspace = true
+use-planet.workspace = true
+use-star.workspace = true
+
+[lints]
+workspace = true
