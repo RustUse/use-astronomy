@@ -25,7 +25,7 @@ fn non_empty_text(value: impl AsRef<str>, error: StarError) -> Result<String, St
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum StarError {
     EmptyName,
     NonFiniteMass,
@@ -48,6 +48,11 @@ impl Error for StarError {}
 pub struct StarName(String);
 
 impl StarName {
+    /// Creates a star name from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`StarError::EmptyName`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, StarError> {
         non_empty_text(value, StarError::EmptyName).map(Self)
     }
@@ -306,7 +311,13 @@ impl FromStr for LuminosityClass {
 pub struct StellarMass(f64);
 
 impl StellarMass {
-    pub fn new(value: f64) -> Result<Self, StarError> {
+    /// Creates a stellar mass from a finite, non-negative solar-mass value.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`StarError::NonFiniteMass`] when `value` is not finite, or
+    /// [`StarError::NegativeMass`] when `value` is negative.
+    pub const fn new(value: f64) -> Result<Self, StarError> {
         if !value.is_finite() {
             return Err(StarError::NonFiniteMass);
         }
@@ -371,7 +382,7 @@ mod tests {
     fn valid_stellar_mass() {
         let mass = StellarMass::new(1.0).unwrap();
 
-        assert_eq!(mass.solar_masses(), 1.0);
+        assert!((mass.solar_masses() - 1.0).abs() < f64::EPSILON);
     }
 
     #[test]

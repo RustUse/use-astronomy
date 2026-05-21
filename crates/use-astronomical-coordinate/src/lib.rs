@@ -15,7 +15,7 @@ fn normalized_key(value: &str) -> String {
         .collect()
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum AstronomicalCoordinateError {
     NonFiniteRightAscension,
     InvalidRightAscension,
@@ -44,6 +44,12 @@ impl Error for AstronomicalCoordinateError {}
 pub struct RightAscension(f64);
 
 impl RightAscension {
+    /// Creates right ascension from finite degrees within `0.0..=360.0`.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`AstronomicalCoordinateError::NonFiniteRightAscension`] when `value` is not finite,
+    /// or [`AstronomicalCoordinateError::InvalidRightAscension`] when it is outside `0.0..=360.0`.
     pub fn from_degrees(value: f64) -> Result<Self, AstronomicalCoordinateError> {
         if !value.is_finite() {
             return Err(AstronomicalCoordinateError::NonFiniteRightAscension);
@@ -72,6 +78,12 @@ impl fmt::Display for RightAscension {
 pub struct Declination(f64);
 
 impl Declination {
+    /// Creates declination from finite degrees within `-90.0..=90.0`.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`AstronomicalCoordinateError::NonFiniteDeclination`] when `value` is not finite,
+    /// or [`AstronomicalCoordinateError::InvalidDeclination`] when it is outside `-90.0..=90.0`.
     pub fn new(value: f64) -> Result<Self, AstronomicalCoordinateError> {
         if !value.is_finite() {
             return Err(AstronomicalCoordinateError::NonFiniteDeclination);
@@ -230,7 +242,7 @@ pub struct AstronomicalCoordinate {
 
 impl AstronomicalCoordinate {
     #[must_use]
-    pub fn new(
+    pub const fn new(
         right_ascension: RightAscension,
         declination: Declination,
         frame: CoordinateFrame,
@@ -276,7 +288,7 @@ mod tests {
     fn valid_right_ascension() {
         let right_ascension = RightAscension::from_degrees(180.0).unwrap();
 
-        assert_eq!(right_ascension.degrees(), 180.0);
+        assert!((right_ascension.degrees() - 180.0).abs() < f64::EPSILON);
     }
 
     #[test]
@@ -291,7 +303,7 @@ mod tests {
     fn valid_declination() {
         let declination = Declination::new(-16.7161).unwrap();
 
-        assert_eq!(declination.degrees(), -16.7161);
+        assert!((declination.degrees() - -16.7161).abs() < f64::EPSILON);
     }
 
     #[test]

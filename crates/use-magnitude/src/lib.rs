@@ -15,7 +15,7 @@ fn normalized_key(value: &str) -> String {
         .collect()
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum MagnitudeError {
     NonFiniteMagnitude,
     NonFiniteColorIndex,
@@ -36,7 +36,12 @@ impl Error for MagnitudeError {}
 pub struct Magnitude(f64);
 
 impl Magnitude {
-    pub fn new(value: f64) -> Result<Self, MagnitudeError> {
+    /// Creates a magnitude from a finite numeric value.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`MagnitudeError::NonFiniteMagnitude`] when `value` is not finite.
+    pub const fn new(value: f64) -> Result<Self, MagnitudeError> {
         if !value.is_finite() {
             return Err(MagnitudeError::NonFiniteMagnitude);
         }
@@ -122,7 +127,12 @@ impl FromStr for MagnitudeKind {
 pub struct ColorIndex(f64);
 
 impl ColorIndex {
-    pub fn new(value: f64) -> Result<Self, MagnitudeError> {
+    /// Creates a color index from a finite numeric value.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`MagnitudeError::NonFiniteColorIndex`] when `value` is not finite.
+    pub const fn new(value: f64) -> Result<Self, MagnitudeError> {
         if !value.is_finite() {
             return Err(MagnitudeError::NonFiniteColorIndex);
         }
@@ -150,14 +160,14 @@ mod tests {
     fn valid_positive_magnitude() {
         let magnitude = Magnitude::new(2.1).unwrap();
 
-        assert_eq!(magnitude.value(), 2.1);
+        assert!((magnitude.value() - 2.1).abs() < f64::EPSILON);
     }
 
     #[test]
     fn valid_negative_magnitude() {
         let magnitude = Magnitude::new(-1.46).unwrap();
 
-        assert_eq!(magnitude.value(), -1.46);
+        assert!((magnitude.value() - -1.46).abs() < f64::EPSILON);
     }
 
     #[test]
@@ -181,7 +191,7 @@ mod tests {
     fn color_index_construction() {
         let color_index = ColorIndex::new(0.65).unwrap();
 
-        assert_eq!(color_index.value(), 0.65);
+        assert!((color_index.value() - 0.65).abs() < f64::EPSILON);
     }
 
     #[test]

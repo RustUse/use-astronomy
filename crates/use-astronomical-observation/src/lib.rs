@@ -36,6 +36,11 @@ impl Error for AstronomicalObservationTextError {}
 pub struct AstronomicalObservationId(String);
 
 impl AstronomicalObservationId {
+    /// Creates an astronomical observation identifier from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`AstronomicalObservationTextError::EmptyObservationId`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, AstronomicalObservationTextError> {
         let trimmed = value.as_ref().trim();
 

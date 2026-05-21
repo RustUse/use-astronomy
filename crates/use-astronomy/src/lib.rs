@@ -59,7 +59,7 @@ mod tests {
             coordinate.frame(),
             &astronomical_coordinate::CoordinateFrame::Equatorial
         );
-        assert_eq!(visual_magnitude.value(), -26.74);
+        assert!((visual_magnitude.value() - -26.74).abs() < f64::EPSILON);
         assert_eq!(astronomical_epoch.label(), "J2000");
         assert_eq!(constellation_abbreviation.as_str(), "Lyr");
         assert_eq!(observation_band.to_string(), "visible");

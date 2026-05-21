@@ -49,6 +49,11 @@ impl Error for CelestialBodyTextError {}
 pub struct CelestialBodyName(String);
 
 impl CelestialBodyName {
+    /// Creates a celestial body name from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`CelestialBodyTextError::EmptyName`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, CelestialBodyTextError> {
         non_empty_text(value, CelestialBodyTextError::EmptyName).map(Self)
     }
@@ -88,6 +93,11 @@ impl FromStr for CelestialBodyName {
 pub struct CelestialBodyId(String);
 
 impl CelestialBodyId {
+    /// Creates a celestial body identifier from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`CelestialBodyTextError::EmptyId`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, CelestialBodyTextError> {
         non_empty_text(value, CelestialBodyTextError::EmptyId).map(Self)
     }

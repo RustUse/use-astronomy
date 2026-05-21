@@ -50,6 +50,11 @@ impl Error for MoonTextError {}
 pub struct MoonName(String);
 
 impl MoonName {
+    /// Creates a moon name from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`MoonTextError::EmptyName`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, MoonTextError> {
         non_empty_text(value, MoonTextError::EmptyName).map(Self)
     }
@@ -149,6 +154,12 @@ pub struct SatelliteRelation {
 }
 
 impl SatelliteRelation {
+    /// Creates a relation between non-empty parent and satellite identifiers.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`MoonTextError::EmptyParentIdentifier`] when the trimmed parent identifier is empty,
+    /// or [`MoonTextError::EmptySatelliteIdentifier`] when the trimmed satellite identifier is empty.
     pub fn new(
         parent_identifier: impl AsRef<str>,
         satellite_identifier: impl AsRef<str>,

@@ -86,7 +86,7 @@ impl FromStr for OrbitalElementKind {
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum OrbitalElementValueError {
     NonFiniteValue,
     EmptyUnitLabel,
@@ -118,7 +118,12 @@ pub struct OrbitalElementValue {
 }
 
 impl OrbitalElementValue {
-    pub fn new(value: f64) -> Result<Self, OrbitalElementValueError> {
+    /// Creates a unitless orbital element value from a finite number.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`OrbitalElementValueError::NonFiniteValue`] when `value` is not finite.
+    pub const fn new(value: f64) -> Result<Self, OrbitalElementValueError> {
         if !value.is_finite() {
             return Err(OrbitalElementValueError::NonFiniteValue);
         }
@@ -129,6 +134,12 @@ impl OrbitalElementValue {
         })
     }
 
+    /// Creates an orbital element value with a non-empty unit label.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`OrbitalElementValueError::NonFiniteValue`] when `value` is not finite, or
+    /// [`OrbitalElementValueError::EmptyUnitLabel`] when the trimmed unit label is empty.
     pub fn with_unit(
         value: f64,
         unit_label: impl AsRef<str>,
@@ -161,6 +172,12 @@ pub struct OrbitalElement {
 }
 
 impl OrbitalElement {
+    /// Creates an orbital element with domain validation for constrained element kinds.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`OrbitalElementValueError::NegativeEccentricity`] for negative eccentricity values,
+    /// or [`OrbitalElementValueError::InvalidInclination`] for inclinations outside `0.0..=180.0`.
     pub fn new(
         kind: OrbitalElementKind,
         value: OrbitalElementValue,
@@ -196,7 +213,7 @@ pub struct OrbitalElementSet {
 
 impl OrbitalElementSet {
     #[must_use]
-    pub fn new(elements: Vec<OrbitalElement>) -> Self {
+    pub const fn new(elements: Vec<OrbitalElement>) -> Self {
         Self { elements }
     }
 
@@ -206,12 +223,12 @@ impl OrbitalElementSet {
     }
 
     #[must_use]
-    pub fn len(&self) -> usize {
+    pub const fn len(&self) -> usize {
         self.elements.len()
     }
 
     #[must_use]
-    pub fn is_empty(&self) -> bool {
+    pub const fn is_empty(&self) -> bool {
         self.elements.is_empty()
     }
 }
@@ -251,7 +268,7 @@ mod tests {
         )
         .unwrap();
 
-        assert_eq!(element.value().value(), 0.0167);
+        assert!((element.value().value() - 0.0167).abs() < f64::EPSILON);
     }
 
     #[test]

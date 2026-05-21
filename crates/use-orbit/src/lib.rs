@@ -34,6 +34,11 @@ impl Error for OrbitTextError {}
 pub struct OrbitName(String);
 
 impl OrbitName {
+    /// Creates an orbit name from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`OrbitTextError::EmptyName`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, OrbitTextError> {
         let trimmed = value.as_ref().trim();
 

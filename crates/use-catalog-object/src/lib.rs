@@ -53,6 +53,11 @@ impl Error for CatalogObjectTextError {}
 pub struct CatalogName(String);
 
 impl CatalogName {
+    /// Creates a catalog name from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`CatalogObjectTextError::EmptyCatalogName`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, CatalogObjectTextError> {
         non_empty_text(value, CatalogObjectTextError::EmptyCatalogName).map(Self)
     }
@@ -87,6 +92,11 @@ impl FromStr for CatalogName {
 pub struct CatalogObjectId(String);
 
 impl CatalogObjectId {
+    /// Creates a catalog object identifier from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`CatalogObjectTextError::EmptyCatalogObjectId`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, CatalogObjectTextError> {
         non_empty_text(value, CatalogObjectTextError::EmptyCatalogObjectId).map(Self)
     }
@@ -121,6 +131,11 @@ impl FromStr for CatalogObjectId {
 pub struct CatalogDesignation(String);
 
 impl CatalogDesignation {
+    /// Creates a catalog designation from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`CatalogObjectTextError::EmptyDesignation`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, CatalogObjectTextError> {
         non_empty_text(value, CatalogObjectTextError::EmptyDesignation).map(Self)
     }

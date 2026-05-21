@@ -1,6 +1,6 @@
 # use-astronomy
 
-Facade crate for primitive RustUse astronomy vocabulary.
+Facade crate for primitive `RustUse` astronomy vocabulary.
 
 `use-astronomy` re-exports focused crates for celestial bodies, stars, planets, moons, orbits, orbital elements, astronomical coordinates, magnitudes, epochs, constellations, observations, and catalog objects.
 

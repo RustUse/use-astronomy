@@ -42,6 +42,11 @@ impl Error for ConstellationTextError {}
 pub struct ConstellationName(String);
 
 impl ConstellationName {
+    /// Creates a constellation name from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`ConstellationTextError::EmptyName`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, ConstellationTextError> {
         non_empty_text(value, ConstellationTextError::EmptyName).map(Self)
     }
@@ -76,6 +81,11 @@ impl FromStr for ConstellationName {
 pub struct ConstellationAbbreviation(String);
 
 impl ConstellationAbbreviation {
+    /// Creates a constellation abbreviation from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`ConstellationTextError::EmptyAbbreviation`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, ConstellationTextError> {
         non_empty_text(value, ConstellationTextError::EmptyAbbreviation).map(Self)
     }
@@ -110,6 +120,11 @@ impl FromStr for ConstellationAbbreviation {
 pub struct ConstellationRegion(String);
 
 impl ConstellationRegion {
+    /// Creates a constellation region label from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`ConstellationTextError::EmptyRegion`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, ConstellationTextError> {
         non_empty_text(value, ConstellationTextError::EmptyRegion).map(Self)
     }

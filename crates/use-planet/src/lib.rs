@@ -49,6 +49,11 @@ impl Error for PlanetTextError {}
 pub struct PlanetName(String);
 
 impl PlanetName {
+    /// Creates a planet name from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`PlanetTextError::EmptyName`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, PlanetTextError> {
         non_empty_text(value, PlanetTextError::EmptyName).map(Self)
     }
@@ -88,6 +93,11 @@ impl FromStr for PlanetName {
 pub struct PlanetarySystemName(String);
 
 impl PlanetarySystemName {
+    /// Creates a planetary system name from non-empty text.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`PlanetTextError::EmptySystemName`] when the trimmed input is empty.
     pub fn new(value: impl AsRef<str>) -> Result<Self, PlanetTextError> {
         non_empty_text(value, PlanetTextError::EmptySystemName).map(Self)
     }

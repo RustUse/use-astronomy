@@ -102,7 +102,12 @@ impl FromStr for EpochKind {
 pub struct JulianDate(f64);
 
 impl JulianDate {
-    pub fn new(value: f64) -> Result<Self, EpochError> {
+    /// Creates a Julian date from a finite numeric value.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`EpochError::NonFiniteJulianDate`] when `value` is not finite.
+    pub const fn new(value: f64) -> Result<Self, EpochError> {
         if !value.is_finite() {
             return Err(EpochError::NonFiniteJulianDate);
         }
@@ -120,7 +125,12 @@ impl JulianDate {
 pub struct ModifiedJulianDate(f64);
 
 impl ModifiedJulianDate {
-    pub fn new(value: f64) -> Result<Self, EpochError> {
+    /// Creates a modified Julian date from a finite numeric value.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`EpochError::NonFiniteModifiedJulianDate`] when `value` is not finite.
+    pub const fn new(value: f64) -> Result<Self, EpochError> {
         if !value.is_finite() {
             return Err(EpochError::NonFiniteModifiedJulianDate);
         }
@@ -141,6 +151,11 @@ pub struct AstronomicalEpoch {
 }
 
 impl AstronomicalEpoch {
+    /// Creates an astronomical epoch with a non-empty label and kind.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`EpochError::EmptyLabel`] when the trimmed label is empty.
     pub fn new(label: impl AsRef<str>, kind: EpochKind) -> Result<Self, EpochError> {
         let trimmed = label.as_ref().trim();
 
@@ -206,14 +221,14 @@ mod tests {
     fn julian_date_construction() {
         let julian_date = JulianDate::new(2_451_545.0).unwrap();
 
-        assert_eq!(julian_date.value(), 2_451_545.0);
+        assert!((julian_date.value() - 2_451_545.0).abs() < f64::EPSILON);
     }
 
     #[test]
     fn modified_julian_date_construction() {
         let modified_julian_date = ModifiedJulianDate::new(51_544.5).unwrap();
 
-        assert_eq!(modified_julian_date.value(), 51_544.5);
+        assert!((modified_julian_date.value() - 51_544.5).abs() < f64::EPSILON);
     }
 
     #[test]
