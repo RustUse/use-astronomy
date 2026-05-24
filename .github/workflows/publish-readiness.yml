@@ -21,7 +21,7 @@ jobs:
         use-celestial-body use-star use-planet use-moon use-astronomical-orbit use-orbital-element use-astronomical-coordinate use-magnitude use-epoch use-constellation use-astronomical-observation use-catalog-object
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install stable Rust toolchain
         uses: actions-rust-lang/setup-rust-toolchain@v1
